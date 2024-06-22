@@ -52,24 +52,11 @@ class TodoItemView(APIView):
           return Response(serializer.data)
         return Response(serializer.errors)
     
+    
     def delete(self, request, id, format=None):
-        if request.method =="delete":
-            serializer = TodoSerializer(data=request.data)
-            if serializer.is_valid():
-                todo_id = serializer.validated_data.get('id')
-                todo_id.delete()
-            return Response(serializer.errors)
-
-            # todo = ToDoItem.objects.get(id=id)
-            # todo.delete()
-            # return HttpResponseRedirect(status=204)
-    
-    
-    # def delete(self, request, format=None):
-    #     try:
-    #         todo_id = int(request.data['id'])  # ID aus dem Request-Body holen
-    #         todo_item = ToDoItem.objects.get(id=todo_id, author=request.user)  # ToDo anhand der ID und des Autors suchen
-    #         todo_item.delete()  # ToDo löschen
-    #         return Response({'message': 'ToDo erfolgreich gelöscht'})
-    #     except (ValueError, ToDoItem.DoesNotExist):
-    #         return Response({'error': 'Ungültige ToDo-ID oder ToDo nicht gefunden'}, status=400)
+        try:
+            todo = ToDoItem.objects.get(pk=id, author=request.user)
+            todo.delete()
+            return Response({'message': 'Todo item deleted successfully'})
+        except ToDoItem.DoesNotExist:
+            return Response({'message': 'Todo item with ID not found'}, status=404)

@@ -20,8 +20,11 @@ from django.urls import path
 from todolist.views import LoginView, TodoItemView
 
 urlpatterns = [
+    # route
     path('admin/', admin.site.urls),
     path('login/', LoginView.as_view()),
     path('todos/', TodoItemView.as_view()),
+    # delete
+    path('todos/<int:id>', TodoItemView.as_view()),
 
 ]
