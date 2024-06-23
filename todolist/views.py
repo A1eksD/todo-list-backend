@@ -10,6 +10,7 @@ from rest_framework.views import APIView
 from todolist.models import ToDoItem
 from todolist.serializers import TodoSerializer
 from django.db import models
+from django.contrib.auth import logout
 
 # Create your views here.
 
@@ -76,3 +77,9 @@ class TodoItemView(APIView):
                 return Response(serializer.errors)
             except ToDoItem.DoesNotExist:
                 return Response({'message': 'Todo item with ID not found'}, status=404)
+            
+
+class LogoutView(APIView):
+    def post(self, request, format=None):
+        logout(request)
+        return Response({'message': 'Logout successful'})
