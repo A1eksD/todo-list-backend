@@ -24,7 +24,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('login/', LoginView.as_view()),
     path('todos/', TodoItemView.as_view()),
-    # delete
+    # delete, put
     path('todos/<int:id>', TodoItemView.as_view()),
 
 ]

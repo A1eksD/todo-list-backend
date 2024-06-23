@@ -41,22 +41,38 @@ class TodoItemView(APIView):
     permission_classes = [permissions.IsAuthenticated]
 
     def get(self, request, format=None):
-        todos = ToDoItem.objects.filter(author=request.user)
-        serializer = TodoSerializer(todos, many=True)
-        return Response(serializer.data)
+        if request.method == 'GET':
+            todos = ToDoItem.objects.filter(author=request.user)
+            serializer = TodoSerializer(todos, many=True)
+            return Response(serializer.data)
     
     def post(self, request, format=None):
-        serializer = TodoSerializer(data=request.data)
-        if serializer.is_valid():
-          serializer.save(author=request.user)
-          return Response(serializer.data)
-        return Response(serializer.errors)
+        if request.method == 'POST':
+            serializer = TodoSerializer(data=request.data)
+            if serializer.is_valid():
+              serializer.save(author=request.user)
+              return Response(serializer.data)
+            return Response(serializer.errors)
     
     
     def delete(self, request, id, format=None):
-        try:
-            todo = ToDoItem.objects.get(pk=id, author=request.user)
-            todo.delete()
-            return Response({'message': 'Todo item deleted successfully'})
-        except ToDoItem.DoesNotExist:
-            return Response({'message': 'Todo item with ID not found'}, status=404)
+        if request.method == 'DELETE':
+            try:
+                todo = ToDoItem.objects.get(pk=id, author=request.user)
+                todo.delete()
+                return Response({'message': 'Todo item deleted successfully'})
+            except ToDoItem.DoesNotExist:
+                return Response({'message': 'Todo item with ID not found'}, status=404)
+
+    
+    def put(self, request, id, format=None):
+        if request.method == 'PUT':
+            try:
+                todo_item = ToDoItem.objects.get(id=id, author=request.user)
+                serializer = TodoSerializer(todo_item, data=request.data)
+                if serializer.is_valid():
+                    serializer.save()
+                    return Response(serializer.data)
+                return Response(serializer.errors)
+            except ToDoItem.DoesNotExist:
+                return Response({'message': 'Todo item with ID not found'}, status=404)
