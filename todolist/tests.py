@@ -7,7 +7,7 @@ from rest_framework import status
 class LoginViewTests(APITestCase):
 
     def setUp(self):
-        self.url = reverse('login')  # passe den Namen der URL an, falls nötig
+        self.url = reverse('login') 
         self.user = User.objects.create_user(username='testuser', password='testpassword', email='test@example.com')
 
     def test_login_valid_credentials(self):
