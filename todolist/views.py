@@ -22,6 +22,7 @@ from django.contrib.auth import logout
 class LoginView(ObtainAuthToken):
     def post(self, request, *args, **kwargs):
         #nimmt die daten auf and wandelt die mit dem serializer in python code um
+        
         serializer = self.serializer_class(data=request.data,
                                            context={'request': request})
         #überprüft ob die anfage valide ist
