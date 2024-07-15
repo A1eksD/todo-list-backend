@@ -26,7 +26,7 @@ urlpatterns = [
     # delete, put
     path('todos/<int:id>', TodoItemView.as_view()),
     # login
-    path('login/', LoginView.as_view()),
+    path('login/', LoginView.as_view(), name='login'),
     # logout
     path('logout/', LogoutView.as_view()),
 
